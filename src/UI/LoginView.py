@@ -2,10 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.messagebox import showinfo, showerror
 from src.Controller.login_controller import *
+from src.Controller.login_controller import *
 from AppView import *
 
+APP_NAME = "ZonaFit - Login"
 root = App()
-root.title("Login View")
+root.title(APP_NAME)
+controller = LoginController()
+
 
 #GRID Design
 for x in range(3):
@@ -86,13 +90,15 @@ link.bind("<Button-1>", lambda e: on_register())
 
 #METODOS
 def validar(event):
-    usuario = ent_user.get()
+    username = ent_user.get()
     password = ent_password.get()
-    if usuario == "admin" and password == "admin":
-        print("Auth Success")
-        showinfo(title="Login", message="Datos Correctos")
+    if controller.authenticate(username, password):
+        showinfo(title=APP_NAME,message="Login Existoso")
     else:
-        showerror(title="Login", message="Datos Correctos")
+        showerror(title=APP_NAME,message="Login Incorrecto")
+        ent_password.delete(0,tk.END)
+        ent_user.delete(0,tk.END)
+
 
 #EVENTOS
 btn_login.bind("<Return>",validar)
