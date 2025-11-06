@@ -25,7 +25,7 @@ class User:
     def username(self, value):
         self._username = value
 
-    @password
+    @password.setter
     def password(self, value):
         self._password = value
 

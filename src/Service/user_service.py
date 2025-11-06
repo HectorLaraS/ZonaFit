@@ -2,7 +2,7 @@ from src.Domain.client import Client
 from src.Storage.user_persistence import UserPersistence
 
 
-class PersonService:
+class UserService:
     def __init__(self, repo: UserPersistence):
         self._repo = repo
 

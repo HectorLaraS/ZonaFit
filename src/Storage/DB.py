@@ -7,7 +7,7 @@ load_dotenv()
 class Conexion:
     DATABASE = os.getenv("DB_NAME")
     USERNAME = os.getenv("DB_USER")
-    PASSWORD = os.getenv("DB_PASSWORD")
+    PASSWORD = os.getenv("DB_PASS")
     DB_PORT = os.getenv("DB_PORT")
     HOST = os.getenv("DB_HOST")
     POOL_ZISE = 5

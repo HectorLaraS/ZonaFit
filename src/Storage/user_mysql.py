@@ -8,7 +8,7 @@ from src.Storage.user_persistence import UserPersistence
 from src.Storage.DB import  *
 
 
-class PersonMysql(ClientPersistence):
+class UserMysql(UserPersistence):
     SELECT = "SELECT * FROM Users"
     SELECT_BY_ID = "SELECT * FROM Users WHERE user_id=%s"
     SELECT_BY_USERNAME = "SELECT * FROM Users WHERE username=%s"
@@ -23,7 +23,7 @@ class PersonMysql(ClientPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (user.username, user.password, user.person_id)
-            cursor.execute(PersonMysql.INSERTAR,query_values)
+            cursor.execute(UserMysql.INSERTAR,query_values)
             conexion.commit()
             return f"User:{user} agregado"
         except Exception as e:
@@ -40,7 +40,7 @@ class PersonMysql(ClientPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (user.id,)
-            cursor.execute(PersonMysql.ELIMINAR,query_values)
+            cursor.execute(UserMysql.ELIMINAR,query_values)
             conexion.commit()
             return f"User:{user} eliminado"
         except Exception as e:
@@ -58,7 +58,7 @@ class PersonMysql(ClientPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (user.username, user.password, user.id)
-            cursor.execute(PersonMysql.ACTUALIZAR, query_values)
+            cursor.execute(UserMysql.ACTUALIZAR, query_values)
             conexion.commit()
             return f"User:{user} modificado"
         except Exception as e:
@@ -75,7 +75,7 @@ class PersonMysql(ClientPersistence):
         try:
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
-            cursor.execute(PersonMysql.SELECT_BY_ID)
+            cursor.execute(UserMysql.SELECT_BY_ID)
             registros = cursor.fetchall()
             for registro in registros:
                 user = User(id=int(registro[0]),username=registro[1],password=registro[2],person_id=int(registro[3]))
@@ -95,7 +95,7 @@ class PersonMysql(ClientPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (id,)
-            cursor.execute(PersonMysql.SELECT_BY_ID, query_values)
+            cursor.execute(UserMysql.SELECT_BY_ID, query_values)
             registro = cursor.fetchone()
             person = User(id=int(registro[0]),username=registro[1],password=registro[2],person_id=int(registro[3]))
             return person
@@ -113,7 +113,7 @@ class PersonMysql(ClientPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (username,)
-            cursor.execute(PersonMysql.SELECT_BY_USERNAME, query_values)
+            cursor.execute(UserMysql.SELECT_BY_USERNAME, query_values)
             registro = cursor.fetchone()
             person = User(id=int(registro[0]),username=registro[1],password=registro[2],person_id=int(registro[3]))
             return person
