@@ -18,5 +18,8 @@ class PersonService:
     def get_all(self):
         return self._repo.get_all()
 
-    def get_by_id(self):
-        return self._repo.get_all()
+    def get_by_id(self, id):
+        return self._repo.get_by_id(id)
+
+    def get_by_user(self, username):
+        return self._repo.get_by_user(username)

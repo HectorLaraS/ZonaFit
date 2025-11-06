@@ -20,5 +20,9 @@ class UserPersistence:
         pass
 
     @abstractmethod
-    def get_by_id(self):
+    def get_by_id(self, id):
+        pass
+
+    @abstractmethod
+    def get_by_user(self, username):
         pass
