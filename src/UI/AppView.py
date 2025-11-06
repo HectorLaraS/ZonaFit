@@ -33,13 +33,22 @@ class App(tk.Tk):
         style.configure("App.TButton", background=App.ACCENT,
                   borderwidth=0, relief="flat"
                   , focusthickness=0,padding=6)
-        style.configure("App.TLabel", background=App.PANEL, foreground=App.TEXT,
+
+        style.configure("Icon.TButton", background=App.BG,
+                        borderwidth=0, relief="flat"
+                        , focusthickness=0, padding=6)
+        style.configure("App.TLabel", background=App.BG, foreground=App.TEXT,
                         borderwidth=0, relief="flat",
                         font=("Segoe UI", 11),
                         focusthickness=0,padding=6)
-        style.configure("App.TLabel", background=App.PANEL, foreground=App.TEXT,
-                        borderwidth=0, relief="flat"
+        style.configure("Brand.TLabel", background=App.BG, foreground=App.TEXT,
+                        borderwidth=0, relief="flat",
+                        font=("Segoe UI", 10)
                         , focusthickness=0, padding=6)
+        style.configure("Button.TLabel", background=App.ACCENT, foreground=App.TEXT,
+                        borderwidth=0, relief="flat",
+                        font=("Segoe UI", 11),
+                        focusthickness=0, padding=6)
         style.configure(
             "Title.TLabel",
             background=App.BG,
@@ -68,6 +77,17 @@ class App(tk.Tk):
             background=[
                 ("active", App.ACCENT_HOVER),  # cuando el mouse pasa encima
                 ("pressed", "#d97b4b"),  # cuando se presiona
+            ],
+            foreground=[
+                ("disabled", "#999999")
+            ]
+        )
+
+        style.map(
+            "Icon.TButton",
+            background=[
+                ("active", App.PANEL),  # cuando el mouse pasa encima
+                ("pressed", App.ACCENT_HOVER),  # cuando se presiona
             ],
             foreground=[
                 ("disabled", "#999999")
