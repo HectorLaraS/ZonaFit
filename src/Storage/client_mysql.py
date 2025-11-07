@@ -73,7 +73,7 @@ class ClientMysql(ClientPersistence):
         try:
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
-            cursor.execute(ClientMysql.SELECT_BY_ID)
+            cursor.execute(ClientMysql.SELECT)
             registros = cursor.fetchall()
             for registro in registros:
                 client = Client(id=int(registro[0]),person_id=int(registro[1]),membership_type=registro[2]

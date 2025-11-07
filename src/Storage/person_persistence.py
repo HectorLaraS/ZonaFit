@@ -22,3 +22,7 @@ class PersonPersistence:
     @abstractmethod
     def get_by_id(self):
         pass
+
+    @abstractmethod
+    def get_by_email(self, email):
+        pass

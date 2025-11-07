@@ -75,7 +75,7 @@ class UserMysql(UserPersistence):
         try:
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
-            cursor.execute(UserMysql.SELECT_BY_ID)
+            cursor.execute(UserMysql.SELECT)
             registros = cursor.fetchall()
             for registro in registros:
                 user = User(id=int(registro[0]),username=registro[1],password=registro[2],person_id=int(registro[3]))

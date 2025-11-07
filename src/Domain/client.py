@@ -11,6 +11,9 @@ class Client:
         self._payment_pending = payment_pending
         self._last_payment = self.calculate_date() if type(last_payment) == type(None) else last_payment
         self._next_payment = self.calculate_next_date() if type(next_payment) == type(None) else next_payment
+        self._fullname = None
+        self._email = None
+        self._phone = None
 
     @property
     def id(self):
@@ -60,6 +63,30 @@ class Client:
     def next_payment(self, value):
         self._next_payment = value
 
+    @property
+    def fullname(self):
+        return self._fullname
+
+    @fullname.setter
+    def fullname(self, value):
+        self._fullname = value
+
+    @property
+    def email(self):
+        return self._email
+
+    @property
+    def phone(self):
+        return self._phone
+
+    @email.setter
+    def email(self, value):
+        self._email = value
+
+    @phone.setter
+    def phone(self, value):
+        self._phone = value
+
     def calculate_date(self):
         return datetime.now().date()
 
@@ -70,5 +97,5 @@ class Client:
 
 
     def __str__(self):
-        return f"ClientID{self.person_id},Membership:{self._membership_type},PaymentPending:{self._payment_pending},LastPayment:{self._last_payment},NextPayment:{self._next_payment}"
+        return f"ClientID:{self.person_id},Membership:{self._membership_type},PaymentPending:{self._payment_pending},LastPayment:{self._last_payment},NextPayment:{self._next_payment}"
 
