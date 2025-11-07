@@ -17,6 +17,7 @@ class ClientView:
     APP_NAME = "ZonaFit - Home"
     def __init__(self, username: str):
         self._username = username
+        self._current_state = "WAITING"
 
     def client_view(self):
 
@@ -159,28 +160,31 @@ class ClientView:
 
         # FUNCIONES
         def mostrar_registro_seleccionado(event):
-            elemento_seleccionado = tabla.selection()[0]
-            elemento = tabla.item(elemento_seleccionado)
-            print(elemento.get("values"))
+            if len(tabla.selection()) > 0:
+                elemento_seleccionado = tabla.selection()[0]
+                elemento = tabla.item(elemento_seleccionado)
+                print(elemento.get("values"))
 
-            ent_name.delete(0,tk.END)
-            ent_last.delete(0,tk.END)
-            ent_membresia.delete(0,tk.END)
-            ent_membresia_id.delete(0,tk.END)
-            ent_payment_date.delete(0,tk.END)
-            ent_payment_pending.delete(0,tk.END)
-            ent_email.delete(0,tk.END)
-            ent_phone.delete(0,tk.END)
+                ent_name.delete(0,tk.END)
+                ent_last.delete(0,tk.END)
+                ent_membresia.delete(0,tk.END)
+                ent_membresia_id.delete(0,tk.END)
+                ent_payment_date.delete(0,tk.END)
+                ent_payment_pending.delete(0,tk.END)
+                ent_email.delete(0,tk.END)
+                ent_phone.delete(0,tk.END)
+
+                ent_name.focus_set()
 
 
-            ent_name.insert(0,str(elemento.get("values")[1]).split(" ")[0])
-            ent_last.insert(0,str(elemento.get("values")[1]).split(" ")[1])
-            ent_membresia.set(str(elemento.get("values")[2]))
-            ent_membresia_id.insert(0,str(elemento.get("values")[3]))
-            ent_payment_date.insert(0,str(elemento.get("values")[4]))
-            ent_payment_pending.insert(0,str(elemento.get("values")[5]))
-            ent_email.insert(0,str(elemento.get("values")[6]))
-            ent_phone.insert(0, str(elemento.get("values")[7]))
+                ent_name.insert(0,str(elemento.get("values")[1]).split(" ")[0])
+                ent_last.insert(0,str(elemento.get("values")[1]).split(" ")[1])
+                ent_membresia.set(str(elemento.get("values")[2]))
+                ent_membresia_id.insert(0,str(elemento.get("values")[3]))
+                ent_payment_date.insert(0,str(elemento.get("values")[4]))
+                ent_payment_pending.insert(0,str(elemento.get("values")[5]))
+                ent_email.insert(0,str(elemento.get("values")[6]))
+                ent_phone.insert(0, str(elemento.get("values")[7]))
 
         def agregar_usuario(event):
             ent_name.delete(0, tk.END)
@@ -193,30 +197,43 @@ class ClientView:
             ent_phone.delete(0, tk.END)
 
             ent_payment_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
+            self._current_state = "ADD"
 
         def editar_usuario(event):
             pass
 
 
         def confirmar_usuario(event):
-            ent_payment_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
-            lst_elements = [ent_name.get(), ent_last.get(), ent_membresia.get(), ent_email.get(), ent_phone.get()]
-            print(lst_elements)
-            controller.agregar_usuario(lst_elements)
+            if self._current_state == "ADD":
+                tabla.selection_remove(tabla.selection())
+                ent_payment_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
+                lst_elements = [ent_name.get(), ent_last.get(), ent_membresia.get(), ent_email.get(), ent_phone.get()]
+                print(lst_elements)
+                controller.agregar_usuario(lst_elements)
+                tabla.selection_remove(tabla.selection())
 
-            tabla.delete(*tabla.get_children())
-            datos = cargar_datos()
-            for dato in datos:
-                tabla.insert(parent="", index=tk.END, values=dato)
+                tabla.delete(*tabla.get_children())
+                tabla.selection_remove(tabla.selection())
+                tabla.focus("")  # quita el foco del ítem seleccionado
+                ent_name.focus_set()
 
-            ent_name.delete(0, tk.END)
-            ent_last.delete(0, tk.END)
-            ent_membresia.delete(0, tk.END)
-            ent_membresia_id.delete(0, tk.END)
-            ent_payment_pending.delete(0, tk.END)
-            ent_payment_date.delete(0, tk.END)
-            ent_email.delete(0, tk.END)
-            ent_phone.delete(0, tk.END)
+                datos = cargar_datos()
+
+
+                for dato in datos:
+                    tabla.insert(parent="", index=tk.END, values=dato)
+
+                ent_name.delete(0, tk.END)
+                ent_last.delete(0, tk.END)
+                ent_membresia.delete(0, tk.END)
+                ent_membresia_id.delete(0, tk.END)
+                ent_payment_pending.delete(0, tk.END)
+                ent_payment_date.delete(0, tk.END)
+                ent_email.delete(0, tk.END)
+                ent_phone.delete(0, tk.END)
+                self._current_state = "WAITING"
+            else:
+                print("Waiting...")
 
 
         # EVENTOS
