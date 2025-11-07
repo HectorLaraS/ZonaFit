@@ -63,7 +63,7 @@ class ClientView:
 
         lbl_membresia_id = ttk.Label(panel_frame, text="Membresia ID", style="Form.TLabel")
         lbl_membresia_id.grid(row=4, column=0, sticky="we", padx=(18, 8), pady=6)
-        ent_membresia_id = ttk.Entry(panel_frame, style="InformationForm.TEntry")
+        ent_membresia_id = ttk.Entry(panel_frame, style="InformationForm.TEntry", state="readonly")
         ent_membresia_id.grid(row=4, column=1, sticky="we", padx=(0, 18), pady=6, ipady=4)
 
         lbl_payment_date = ttk.Label(panel_frame, text="Fecha de Corte", style="Form.TLabel")
@@ -73,7 +73,8 @@ class ClientView:
 
         lbl_payment_pending = ttk.Label(panel_frame, text="Membresia Vencida", style="Form.TLabel")
         lbl_payment_pending.grid(row=6, column=0, sticky="we", padx=(18, 8), pady=6)
-        ent_payment_pending = ttk.Entry(panel_frame, style="InformationForm.TEntry")
+        ent_payment_pending = ttk.Combobox(panel_frame, style="InformationForm.TCombobox"
+                                           ,values=["True", "False"],state="readonly")
         ent_payment_pending.grid(row=6, column=1, sticky="we", padx=(0, 18), pady=6, ipady=4)
 
         lbl_email = ttk.Label(panel_frame, text="Email", style="Form.TLabel")
@@ -164,6 +165,7 @@ class ClientView:
                 elemento_seleccionado = tabla.selection()[0]
                 elemento = tabla.item(elemento_seleccionado)
                 print(elemento.get("values"))
+                ent_membresia_id.configure(state="normal")
 
                 ent_name.delete(0,tk.END)
                 ent_last.delete(0,tk.END)
@@ -176,15 +178,15 @@ class ClientView:
 
                 ent_name.focus_set()
 
-
                 ent_name.insert(0,str(elemento.get("values")[1]).split(" ")[0])
                 ent_last.insert(0,str(elemento.get("values")[1]).split(" ")[1])
                 ent_membresia.set(str(elemento.get("values")[2]))
                 ent_membresia_id.insert(0,str(elemento.get("values")[3]))
                 ent_payment_date.insert(0,str(elemento.get("values")[4]))
-                ent_payment_pending.insert(0,str(elemento.get("values")[5]))
+                ent_payment_pending.set(str(elemento.get("values")[5]))
                 ent_email.insert(0,str(elemento.get("values")[6]))
                 ent_phone.insert(0, str(elemento.get("values")[7]))
+                ent_membresia_id.configure(state="readonly")
 
         def agregar_usuario(event):
             ent_name.delete(0, tk.END)
@@ -200,6 +202,13 @@ class ClientView:
             self._current_state = "ADD"
 
         def editar_usuario(event):
+            if len(ent_membresia_id.get()) < 1:
+                showerror(title="Error", message="Debe seleccionar un usuario primero")
+            else:
+                print("Editando")
+
+
+        def eliminar_usuario(event):
             pass
 
 
@@ -242,6 +251,10 @@ class ClientView:
         btn_agregar.bind("<Button-1>", agregar_usuario)
         btn_guardar.bind("<Return>", confirmar_usuario)
         btn_guardar.bind("<Button-1>", confirmar_usuario)
+        btn_editar.bind("<Return>", editar_usuario)
+        btn_editar.bind("<Button-1>", editar_usuario)
+        btn_eliminar.bind("<Return>", eliminar_usuario)
+        btn_eliminar.bind("<Button-1>", eliminar_usuario)
 
 
 
