@@ -31,3 +31,13 @@ def bootstrap_service_person():
     persistencia = PersonMysql()
     service = PersonService(persistencia)
     return service
+
+from datetime import datetime
+
+def validar_fecha(fecha_str: str) -> bool:
+    """Valida que la fecha esté en formato dd/mm/yyyy."""
+    try:
+        datetime.strptime(fecha_str, "%d/%m/%Y")
+        return True
+    except ValueError:
+        return False

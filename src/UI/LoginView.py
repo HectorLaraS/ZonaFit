@@ -98,9 +98,10 @@ def login():
         if controller.authenticate(username, password):
             showinfo(title=APP_NAME,message="Login Existoso")
             root.withdraw()
+            root.destroy()
             home = HomeView(username=username)
             home.home_view()
-            root.destroy()
+
 
 
         else:

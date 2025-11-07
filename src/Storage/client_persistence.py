@@ -23,3 +23,7 @@ class ClientPersistence:
     @abstractmethod
     def get_by_id(self, id) -> Optional["Person"]:
         pass
+
+    @abstractmethod
+    def get_by_user_id(self, id) -> Optional["Person"]:
+        pass

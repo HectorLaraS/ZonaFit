@@ -10,6 +10,7 @@ from src.Storage.DB import  *
 class ClientMysql(ClientPersistence):
     SELECT = "SELECT * FROM Clients"
     SELECT_BY_ID = "SELECT * FROM Clients WHERE client_id=%s"
+    SELECT_BY_USER_ID = "SELECT * FROM Clients WHERE person_id=%s"
     INSERTAR = "INSERT INTO Clients (person_id, tipo_membresia, ultimo_cobro, proximo_cobro, pendiente_pago) VALUES (%s, %s, %s, %s, %s)"
     ACTUALIZAR = "UPDATE Clients SET tipo_membresia =%s, ultimo_cobro =%s, proximo_cobro =%s, pendiente_pago =%s WHERE client_id =%s"
     ELIMINAR = "DELETE FROM Clients WHERE client_id =%s"
@@ -38,6 +39,8 @@ class ClientMysql(ClientPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (new_client.id,)
+            print(f"Query Values: {query_values}")
+            print(f"client: {new_client}")
             cursor.execute(ClientMysql.ELIMINAR,query_values)
             conexion.commit()
             return f"Cliente ClientID:{new_client.id} PersonID:{new_client.person_id} eliminado"
@@ -53,9 +56,11 @@ class ClientMysql(ClientPersistence):
         conexion: MySQLConnection = None
         cursor: MySQLCursor = None
         try:
+            pendiente_pago = 1 if cliente.payment_pending == "True" else 0
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
-            query_values = (cliente.membership_type,cliente.last_payment,cliente.next_payment, cliente.next_payment, cliente.id)
+            query_values = (cliente.membership_type,cliente.last_payment,cliente.next_payment, pendiente_pago, cliente.id)
+            print(query_values)
             cursor.execute(ClientMysql.ACTUALIZAR, query_values)
             conexion.commit()
             return f"Cliente ClientID:{cliente.id} PersonID:{cliente.person_id} modificado"
@@ -98,6 +103,25 @@ class ClientMysql(ClientPersistence):
             registro = cursor.fetchone()
             person = Client(id=int(registro[0]),person_id=int(registro[1]),membership_type=registro[2]
                                 , last_payment=registro[3], next_payment=registro[4], payment_pending=registro[5])
+            return person
+        except Exception as e:
+            return None
+        finally:
+            if conexion is not None:
+                cursor.close()
+                Conexion.liberar_conexion(conexion)
+
+    def get_by_user_id(self, id: int) -> Optional[Client]:
+        conexion: MySQLConnection = None
+        cursor: MySQLCursor = None
+        try:
+            conexion: MySQLConnection = Conexion.obtener_conexion()
+            cursor: MySQLCursor = conexion.cursor()
+            query_values = (id,)
+            cursor.execute(ClientMysql.SELECT_BY_USER_ID, query_values)
+            registro = cursor.fetchone()
+            person = Client(id=int(registro[0]), person_id=int(registro[1]), membership_type=registro[2]
+                            , last_payment=registro[3], next_payment=registro[4], payment_pending=registro[5])
             return person
         except Exception as e:
             return None

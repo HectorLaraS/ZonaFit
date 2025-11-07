@@ -99,3 +99,12 @@ class Client:
     def __str__(self):
         return f"ClientID:{self.person_id},Membership:{self._membership_type},PaymentPending:{self._payment_pending},LastPayment:{self._last_payment},NextPayment:{self._next_payment}"
 
+
+if __name__ == "__main__":
+    fecha_str = "06/12/2025"
+    fecha_dt = datetime.strptime(fecha_str, "%d/%m/%Y")
+    new_fecha = fecha_dt + relativedelta(months=1)
+    cliente = Client()
+    cliente.last_payment = fecha_dt
+    cliente.next_payment = new_fecha
+    print(cliente)

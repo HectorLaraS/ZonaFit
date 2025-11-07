@@ -37,6 +37,7 @@ class PersonMysql(PersonPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (new_person.id,)
+            print(query_values)
             cursor.execute(PersonMysql.ELIMINAR,query_values)
             conexion.commit()
             return f"Usuario {new_person.name} {new_person.last} eliminado"
@@ -54,6 +55,7 @@ class PersonMysql(PersonPersistence):
             conexion: MySQLConnection = Conexion.obtener_conexion()
             cursor: MySQLCursor = conexion.cursor()
             query_values = (person.name, person.last, person.email, person.phone, person.id)
+            print(query_values)
             cursor.execute(PersonMysql.ACTUALIZAR, query_values)
             conexion.commit()
             return f"Usuario {person.name} {person.last} modificado"

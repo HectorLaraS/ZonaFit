@@ -6,6 +6,7 @@ from src.Controller.login_controller import *
 from src.UI.AppView import *
 from PIL import Image, ImageTk
 from pathlib import Path
+from src.UI.ClientView import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 image_user = BASE_DIR / "images" / "circle-user.png"
@@ -89,7 +90,7 @@ class HomeView:
         )
         btn_payment.grid(row=0, column=0, sticky="nsew")
 
-        lbl_payment = ttk.Label(payment_frame, style="Button.TLabel", text="Trabajadores", anchor="center",
+        lbl_payment = ttk.Label(payment_frame, style="Button.TLabel", text="Pagos", anchor="center",
                                 justify="center",
                                 width=24)
         lbl_payment.grid(row=1, column=0, sticky=tk.NSEW)
@@ -98,7 +99,19 @@ class HomeView:
         lbl_user.grid(row=3, column=0, sticky=tk.NSEW)
 
 
-        #root.mainloop()
+        def abrir_modulo_clientes(event):
+            root.withdraw()
+            root.destroy()
+            mod_clients = ClientView(username=self._username)
+            mod_clients.client_view()
+
+
+        # EVENTOS
+        btn_clients.bind("<Return>", abrir_modulo_clientes)
+        btn_clients.bind("<Button-1>", abrir_modulo_clientes)
+
+
+        root.mainloop()
 
 
 if __name__ == "__main__":
